@@ -6,21 +6,21 @@ def extract_images(docx_path, output_dir="images"): #같은 디렉토리에 추�
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-        saved_images=[]
+    saved_images=[]
 
-        with ZipFile(docx_path, 'r') as docx_zip:
-            # docx의 word/media/ 경로에 그림들이 저장되어있음
-            image_files = [f for f in docx_zip.namelist() if f.startswith("word/media/")]
+    with ZipFile(docx_path, 'r') as docx_zip:
+        # docx의 word/media/ 경로에 그림들이 저장되어있음
+        image_files = [f for f in docx_zip.namelist() if f.startswith("word/media/")]
 
-            for idx, image_name in enumerate(image_files, 1):
-                image_data=docx_zip.read(image_name)
-                extension=os.path.splitext(image_name)[1]
-                image_path=os.path.join(output_dir,f"image{idx}{extension}")
+        for idx, image_name in enumerate(image_files, 1):
+            image_data=docx_zip.read(image_name)
+            extension=os.path.splitext(image_name)[1]
+            image_path=os.path.join(output_dir,f"image{idx}{extension}")
 
-                with open(image_path, 'wb') as img_file:
-                    img_file.write(image_data)
-                    saved_images.append(image_path)
-        return saved_images
+            with open(image_path, 'wb') as img_file:
+                img_file.write(image_data)
+                saved_images.append(image_path)
+    return saved_images
 
 def parse_docx_print(filename="test.docx"):     #텍스트(표 포함) 파싱 후 출력 함수
     document = Document(filename)
